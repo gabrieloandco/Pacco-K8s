@@ -1,0 +1,38 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: parcels-deployment
+  namespace: microservices
+  labels:
+    app: parcels
+spec:
+  replicas: 3
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+  selector:
+    matchLabels:
+      app: parcels
+  template:
+    metadata:
+      labels:
+        app: parcels
+    spec:
+      containers:
+        - name: parcels
+          image: devmentors/pacco.services.parcels
+          resources:
+            requests:
+              cpu: "25m"
+              memory: "128Mi"
+            limits:
+              cpu: "75m"
+              memory: "256Mi"
+          ports:
+          - containerPort: 80
+          envFrom:
+          - configMapRef:
+              name: parcels-configmap
