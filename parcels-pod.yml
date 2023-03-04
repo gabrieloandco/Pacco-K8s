@@ -1,0 +1,22 @@
+---
+apiVersion: v1
+kind: Pod
+metadata:
+ name: parcels-pod
+ namespace: microservices
+ labels:
+    app: parcels
+spec:
+ containers:
+   - command:
+      - sleep
+      - "3600"
+     image: devmentors/pacco.services.parcels
+     name: parcels
+     livenessProbe:
+        httpGet:
+          path: /healthz
+          port: 5007
+          host: localhost
+        initialDelaySeconds: 3
+        periodSeconds: 3
