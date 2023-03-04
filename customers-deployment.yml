@@ -1,0 +1,38 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: customers-deployment
+  namespace: microservices
+  labels:
+    app: customers
+spec:
+  replicas: 3
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+  selector:
+    matchLabels:
+      app: customers
+  template:
+    metadata:
+      labels:
+        app: customers
+    spec:
+      containers:
+        - name: customers
+          image: devmentors/pacco.services.customers
+          resources:
+            requests:
+              cpu: "25m"
+              memory: "128Mi"
+            limits:
+              cpu: "75m"
+              memory: "256Mi"
+          ports:
+          - containerPort: 80
+          envFrom:
+          - configMapRef:
+              name: customers-configmap

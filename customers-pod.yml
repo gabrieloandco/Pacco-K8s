@@ -1,0 +1,22 @@
+---
+apiVersion: v1
+kind: Pod
+metadata:
+ name: customers-pod
+ namespace: microservices
+ labels:
+    app: customers
+spec:
+ containers:
+   - command:
+      - sleep
+      - "3600"
+     image: devmentors/pacco.services.customers
+     name: customers
+     livenessProbe:
+        httpGet:
+          path: /healthz
+          port: 5002
+          host: localhost
+        initialDelaySeconds: 3
+        periodSeconds: 3

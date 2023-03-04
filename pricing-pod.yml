@@ -1,0 +1,22 @@
+---
+apiVersion: v1
+kind: Pod
+metadata:
+ name: pricing-pod
+ namespace: microservices
+ labels:
+    app: pricing
+spec:
+ containers:
+   - command:
+      - sleep
+      - "3600"
+     image: devmentors/pacco.services.pricing
+     name: pricing
+     livenessProbe:
+        httpGet:
+          path: /healthz
+          port: 5008
+          host: localhost
+        initialDelaySeconds: 3
+        periodSeconds: 3
